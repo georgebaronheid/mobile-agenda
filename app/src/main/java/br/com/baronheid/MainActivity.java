@@ -3,6 +3,8 @@ package br.com.baronheid;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,21 +22,29 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        Referencia a view de conteudo estática utilizando o layout
         setContentView(R.layout.activity_main);
 
         List<String> alunos = new ArrayList<>(Arrays.asList(
                 "George",
                 "Isabela",
-                "Paula"
+                "Paula",
+                "Glenda"
         ));
 
-        TextView primeiroAluno = findViewById(R.id.textView);
-        TextView segundoAluno = findViewById(R.id.textView2);
-        TextView terceiroAluno = findViewById(R.id.textView3);
+//        List view permite que a renderização da lista seja dinâmica
+        ListView listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
 
-        primeiroAluno.setText(alunos.get(0));
-        segundoAluno.setText(alunos.get(1));
-        terceiroAluno.setText(alunos.get(2));
-
+        /** Não é possivel dar 'add' ou 'set' em um List View. É necessário o uso de um adapter
+         * O ArrayAdapter é uma implementação facilitada em casos de iteração de listas, e é
+         * necessário o uso do R do Android, não o local, buscando um layout que represente um id
+         * int.
+         */
+        listaDeAlunos.setAdapter(new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                alunos));
     }
+
 }

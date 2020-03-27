@@ -1,24 +1,20 @@
-package br.com.baronheid;
+package br.com.baronheid.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.baronheid.R;
 
-public class MainActivity extends AppCompatActivity {
+
+public class ListaAlunosActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Lista de Alunos");
 
 //        Referencia a view de conteudo estática utilizando o layout
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lista_alunos);
 
         List<String> alunos = new ArrayList<>(Arrays.asList(
                 "George",

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import br.com.baronheid.R;
+import br.com.baronheid.dao.AlunoDao;
 
 
 public class ListaAlunosActivity extends AppCompatActivity {
@@ -24,12 +25,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 //        Referencia a view de conteudo estática utilizando o layout
         setContentView(R.layout.activity_lista_alunos);
 
-        List<String> alunos = new ArrayList<>(Arrays.asList(
-                "George",
-                "Isabela",
-                "Paula",
-                "Glenda"
-        ));
+        AlunoDao alunos = new AlunoDao();
 
 //        List view permite que a renderização da lista seja dinâmica
         ListView listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
@@ -42,7 +38,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         listaDeAlunos.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                alunos));
+                alunos.todos()));
     }
 
 }

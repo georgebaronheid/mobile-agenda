@@ -54,12 +54,10 @@ public class FormularioAlunosActivity extends AppCompatActivity {
                 dao.salva(novoAluno);
 
                 /**
-                 * startActivity é um método do Android que permite circulação entre Views
-                 * no Android, carregando consigo o contexto e informando a View destino
-                 * por meio de uma interface Intent.
+                 * Diferentemente do método startActivity, o método abaixo matará a Activity atual,
+                 * trigando o onResume da Activity anterior
                  */
-                startActivity(new Intent(
-                        FormularioAlunosActivity.this, ListaAlunosActivity.class));
+                finish();
             }
         });
 

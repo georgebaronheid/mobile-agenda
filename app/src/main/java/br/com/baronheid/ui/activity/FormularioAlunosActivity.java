@@ -37,18 +37,27 @@ public class FormularioAlunosActivity extends AppCompatActivity {
 
         instanciaCampos();
 
-        configuraFabSalvarAluno();
+        botaoSalvar.setOnClickListener(configuraOnClickListener());
 
     }
 
-    private void configuraFabSalvarAluno() {
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
+
+    private void instanciaCampos() {
+        botaoSalvar = findViewById(R.id.activity_formulario_alunos_botao_salvar);
+
+        nomeAluno = findViewById(R.id.activity_formulario_alunos_nome);
+        telefoneAluno = findViewById(R.id.activity_formulario_alunos_telefone);
+        emailAluno = findViewById(R.id.activity_formulario_alunos_email);
+    }
+
+    private View.OnClickListener configuraOnClickListener() {
+        return new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 salvaAluno();
             }
-        });
+        };
     }
 
     private void salvaAluno() {
@@ -61,13 +70,5 @@ public class FormularioAlunosActivity extends AppCompatActivity {
         dao.salva(novoAluno);
 
         finish();
-    }
-
-    private void instanciaCampos() {
-        botaoSalvar = findViewById(R.id.activity_formulario_alunos_botao_salvar);
-
-        nomeAluno = findViewById(R.id.activity_formulario_alunos_nome);
-        telefoneAluno = findViewById(R.id.activity_formulario_alunos_telefone);
-        emailAluno = findViewById(R.id.activity_formulario_alunos_email);
     }
 }

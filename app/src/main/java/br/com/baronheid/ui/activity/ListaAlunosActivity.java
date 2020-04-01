@@ -36,7 +36,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(ACTIVITY_LISTA_ALUNOS);
 
         botaoAdicionar = findViewById(R.id.activity_main_fab_novo_aluno);
-        configuraFabOnClick();
+
+        botaoAdicionar.setOnClickListener(configuraOnClickListener());
 
     }
 
@@ -51,13 +52,13 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     }
 
-    private void configuraFabOnClick() {
-        botaoAdicionar.setOnClickListener(new View.OnClickListener() {
+    private View.OnClickListener configuraOnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 iniciaActivity();
             }
-        });
+        };
     }
 
     private void carregaListaAlunos() {

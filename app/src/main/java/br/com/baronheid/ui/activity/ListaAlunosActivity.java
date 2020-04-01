@@ -18,10 +18,13 @@ import br.com.baronheid.dao.AlunoDao;
 public class ListaAlunosActivity extends AppCompatActivity {
 
     public static final String APPBAR_NAME = "Lista de Alunos";
+
     public static final int ACTIVITY_LISTA_ALUNOS = R.layout.activity_lista_alunos;
+
     private FloatingActionButton botaoAdicionar;
+
     private ListView listaDeAlunos;
-    //        O DAO será responsável por carregar os dados com sua lista estática
+
     private final AlunoDao alunos = new AlunoDao();
 
 
@@ -30,7 +33,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle(APPBAR_NAME);
 
-//        Referencia a view de conteudo estática utilizando o layout
         setContentView(ACTIVITY_LISTA_ALUNOS);
 
         botaoAdicionar = findViewById(R.id.activity_main_fab_novo_aluno);
@@ -38,17 +40,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * O método onResume é importante no ciclo de vida das Views.
-     * Ele define o que será realizado quando esta View for retomada, como acontecerá quando
-     * o método finish() for chamado na view de formulário.
-     */
+
     @Override
     protected void onResume() {
         super.onResume();
 
-
-//        List view permite que a renderização da lista seja dinâmica
         listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
 
         carregaListaAlunos();
@@ -65,11 +61,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
     }
 
     private void carregaListaAlunos() {
-        /** Não é possivel dar 'add' ou 'set' em um List View. É necessário o uso de um adapter.
-         * O ArrayAdapter é uma implementação facilitada em casos de iteração de listas, e é
-         * necessário o uso do R do Android, não o local, buscando um layout que represente um id
-         * int.
-         */
+
         listaDeAlunos.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,

@@ -2,7 +2,9 @@ package br.com.baronheid.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -11,8 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
+import br.com.baronheid.model.Aluno;
 
 
 public class ListaAlunosActivity extends AppCompatActivity {
@@ -25,8 +31,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private ListView listaDeAlunos;
 
-    private final AlunoDao alunos = new AlunoDao();
+    private final AlunoDao alunoDao = new AlunoDao();
 
+    private final List<Aluno> todos = alunoDao.todos();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +43,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(ACTIVITY_LISTA_ALUNOS);
 
         botaoAdicionar = findViewById(R.id.activity_main_fab_novo_aluno);
-
         botaoAdicionar.setOnClickListener(configuraOnClickListener());
 
     }
@@ -48,7 +54,23 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
 
+        Aluno aluno = new Aluno("João", "112312", "email");
+        Aluno aluno2 = new Aluno("Maria", "112312", "email");
+        todos.add(aluno);
+        todos.add(aluno2);
+
         carregaListaAlunos();
+
+        listaDeAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoClicado = todos.get(position);
+                Intent intent = new Intent(ListaAlunosActivity.this,
+                        FormularioAlunosActivity.class);
+                intent.putExtra("aluno", alunoClicado);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -66,7 +88,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         listaDeAlunos.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                alunos.todos()));
+                todos));
     }
 
     private void iniciaActivity() {

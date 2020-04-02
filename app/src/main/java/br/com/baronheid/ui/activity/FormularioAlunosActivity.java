@@ -1,11 +1,14 @@
 package br.com.baronheid.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.Serializable;
 
 import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
@@ -38,6 +41,14 @@ public class FormularioAlunosActivity extends AppCompatActivity {
         instanciaCampos();
 
         botaoSalvar.setOnClickListener(configuraOnClickListener());
+
+        Intent intent = getIntent();
+
+        Aluno aluno = intent.getExtras().getParcelable("aluno");
+
+        nomeAluno.setText(aluno.getNome());
+        telefoneAluno.setText(aluno.getTelefone());
+        emailAluno.setText(aluno.getEmail());
 
     }
 

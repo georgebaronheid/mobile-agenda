@@ -33,7 +33,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private final AlunoDao alunoDao = new AlunoDao();
 
-    private final List<Aluno> todos = alunoDao.todos();
+    private List<Aluno> todos = alunoDao.todos();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,12 +52,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
+        todos = alunoDao.todos();
 
-        Aluno aluno = new Aluno("João", "112312", "email");
-        Aluno aluno2 = new Aluno("Maria", "112312", "email");
-        todos.add(aluno);
-        todos.add(aluno2);
+        listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
 
         carregaListaAlunos();
 

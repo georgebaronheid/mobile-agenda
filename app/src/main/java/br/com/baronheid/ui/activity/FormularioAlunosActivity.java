@@ -1,14 +1,12 @@
 package br.com.baronheid.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.Serializable;
 
 import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
@@ -30,6 +28,11 @@ public class FormularioAlunosActivity extends AppCompatActivity {
 
     private final AlunoDao dao = new AlunoDao();
 
+    private Aluno aluno = null;
+    private String nome;
+    private String telefone;
+    private String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +45,44 @@ public class FormularioAlunosActivity extends AppCompatActivity {
 
         botaoSalvar.setOnClickListener(configuraOnClickListener());
 
-        Intent intent = getIntent();
+        aluno = getIntent().getParcelableExtra("aluno");
+        if (aluno != null) {
+            preencheCamposAlunoExistente();
+        }
 
-        Aluno aluno = intent.getExtras().getParcelable("aluno");
 
+    }
+
+    private View.OnClickListener configuraOnClickListener() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (aluno == null) {
+                    preencheCamposNovos();
+                    dao.salva(new Aluno(nome, email, telefone));
+                }  else {
+                    aluno.setNome(nomeAluno.getText().toString());
+                    aluno.setTelefone(telefoneAluno.getText().toString());
+                    aluno.setEmail(emailAluno.getText().toString());
+                    dao.edita(aluno);
+                }
+                finish();
+            }
+
+        };
+    }
+
+    private void preencheCamposNovos() {
+        nome = nomeAluno.getText().toString();
+        telefone = telefoneAluno.getText().toString();
+        email = emailAluno.getText().toString();
+    }
+
+    private void preencheCamposAlunoExistente() {
         nomeAluno.setText(aluno.getNome());
         telefoneAluno.setText(aluno.getTelefone());
         emailAluno.setText(aluno.getEmail());
-
     }
 
 
@@ -61,25 +94,5 @@ public class FormularioAlunosActivity extends AppCompatActivity {
         emailAluno = findViewById(R.id.activity_formulario_alunos_email);
     }
 
-    private View.OnClickListener configuraOnClickListener() {
-        return new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                salvaAluno();
-            }
-        };
-    }
-
-    private void salvaAluno() {
-        String nome = nomeAluno.getText().toString();
-        String telefone = telefoneAluno.getText().toString();
-        String email = emailAluno.getText().toString();
-
-        Aluno novoAluno = new Aluno(nome, telefone, email);
-
-        dao.salva(novoAluno);
-
-        finish();
-    }
 }

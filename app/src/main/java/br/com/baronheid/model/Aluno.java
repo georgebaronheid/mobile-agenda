@@ -5,12 +5,11 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.io.Serializable;
-
 public class Aluno implements Parcelable {
-    private final String nome;
-    private final String telefone;
-    private final String email;
+    private Integer id = 0;
+    private String nome;
+    private String telefone;
+    private String email;
 
     public Aluno(String nome, String telefone, String email) {
         this.nome = nome;
@@ -19,6 +18,11 @@ public class Aluno implements Parcelable {
     }
 
     protected Aluno(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
         nome = in.readString();
         telefone = in.readString();
         email = in.readString();
@@ -35,6 +39,26 @@ public class Aluno implements Parcelable {
             return new Aluno[size];
         }
     };
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getNome() {
         return nome;
@@ -61,6 +85,12 @@ public class Aluno implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
         dest.writeString(nome);
         dest.writeString(telefone);
         dest.writeString(email);

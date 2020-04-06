@@ -24,16 +24,24 @@ public class AlunoDao {
         for (Aluno aluno :
                 alunos) {
             if (aluno.getId().equals(alunoEditado.getId())) {
-                posicao = alunos.indexOf(aluno);
+                alunos.set(
+                        alunos.indexOf(aluno),
+                        alunoEditado);
             }
         }
-
-        if (posicao != null) alunos.set(posicao, alunoEditado);
     }
 
     public List<Aluno> todos() {
         return new ArrayList<>(alunos);
     }
 
+    public void remove(Aluno alunoRemovido) {
+        for (Aluno aluno :
+                alunos) {
+            if (aluno.getId().equals(alunoRemovido.getId())){
+                alunos.remove(aluno);
+            }
+        }
+    }
 }
 

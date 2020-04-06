@@ -13,12 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
 import br.com.baronheid.model.Aluno;
+
+import static br.com.baronheid.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
 
 public class ListaAlunosActivity extends AppCompatActivity {
@@ -58,17 +59,35 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         carregaListaAlunos();
 
-        listaDeAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listaDeAlunos.setOnItemClickListener(configuraOnItemClickListener());
+
+        listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno alunoClicado = todos.get(position);
-                Intent intent = new Intent(ListaAlunosActivity.this,
-                        FormularioAlunosActivity.class);
-                intent.putExtra("aluno", alunoClicado);
-                startActivity(intent);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoRemovido = (Aluno) parent.getItemAtPosition(position);
+                alunoDao.remove(alunoRemovido);
+                onResume();
+                return true;
             }
         });
+    }
 
+
+    private AdapterView.OnItemClickListener configuraOnItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoClicado = (Aluno) parent.getItemAtPosition(position);
+                abreFormEdicaoAluno(alunoClicado);
+            }
+        };
+    }
+
+    private void abreFormEdicaoAluno(Aluno alunoClicado) {
+        Intent intent = new Intent(ListaAlunosActivity.this,
+                FormularioAlunosActivity.class);
+        intent.putExtra(CHAVE_ALUNO, alunoClicado);
+        startActivity(intent);
     }
 
     private View.OnClickListener configuraOnClickListener() {

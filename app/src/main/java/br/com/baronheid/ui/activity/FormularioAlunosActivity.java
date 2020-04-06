@@ -1,7 +1,6 @@
 package br.com.baronheid.ui.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,11 +11,14 @@ import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
 import br.com.baronheid.model.Aluno;
 
+import static br.com.baronheid.ui.activity.ConstantesActivities.CHAVE_ALUNO;
+
 public class FormularioAlunosActivity extends AppCompatActivity {
 
-    public static final String APPBAR_NAME = "Novo Aluno";
+    private static final String APPBAR_NAME_NOVO = "Novo Aluno";
 
     public static final int ACTIVITY_FORMULARIO_ALUNOS = R.layout.activity_formulario_alunos;
+    public static final String APPBAR_NAME_EDITAR = "Editar Aluno";
 
     private Button botaoSalvar;
 
@@ -39,16 +41,16 @@ public class FormularioAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(ACTIVITY_FORMULARIO_ALUNOS);
 
-        setTitle(APPBAR_NAME);
 
         instanciaCampos();
 
         botaoSalvar.setOnClickListener(configuraOnClickListener());
 
-        aluno = getIntent().getParcelableExtra("aluno");
+        aluno = getIntent().getParcelableExtra(CHAVE_ALUNO);
         if (aluno != null) {
+            setTitle(APPBAR_NAME_EDITAR);
             preencheCamposAlunoExistente();
-        }
+        } else setTitle(APPBAR_NAME_NOVO);
 
 
     }
@@ -61,16 +63,21 @@ public class FormularioAlunosActivity extends AppCompatActivity {
                 if (aluno == null) {
                     preencheCamposNovos();
                     dao.salva(new Aluno(nome, email, telefone));
-                }  else {
-                    aluno.setNome(nomeAluno.getText().toString());
-                    aluno.setTelefone(telefoneAluno.getText().toString());
-                    aluno.setEmail(emailAluno.getText().toString());
+                } else {
+
+                    preencheObjetoEditado();
                     dao.edita(aluno);
                 }
                 finish();
             }
 
         };
+    }
+
+    private void preencheObjetoEditado() {
+        aluno.setNome(nomeAluno.getText().toString());
+        aluno.setTelefone(telefoneAluno.getText().toString());
+        aluno.setEmail(emailAluno.getText().toString());
     }
 
     private void preencheCamposNovos() {

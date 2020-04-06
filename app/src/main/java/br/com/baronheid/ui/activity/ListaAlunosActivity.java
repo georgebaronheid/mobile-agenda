@@ -2,7 +2,6 @@ package br.com.baronheid.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +26,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
     public static final String APPBAR_NAME = "Lista de Alunos";
 
     public static final int ACTIVITY_LISTA_ALUNOS = R.layout.activity_lista_alunos;
+    public static final int ACTIVITY_MAIN_LISTA_DE_ALUNOS = R.id.activity_main_lista_de_alunos;
+    public static final int ACTIVITY_MAIN_FAB_NOVO_ALUNO = R.id.activity_main_fab_novo_aluno;
 
     private FloatingActionButton botaoAdicionar;
 
@@ -34,7 +35,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private final AlunoDao alunoDao = new AlunoDao();
 
-    private List<Aluno> todos = alunoDao.todos();
+    private ArrayAdapter<Aluno> adapterLista;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +44,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         setContentView(ACTIVITY_LISTA_ALUNOS);
 
-        botaoAdicionar = findViewById(R.id.activity_main_fab_novo_aluno);
+        listaDeAlunos = findViewById(ACTIVITY_MAIN_LISTA_DE_ALUNOS);
+        configuraListaAlunos();
+
+        listaDeAlunos.setOnItemClickListener(configuraOnItemClickListener());
+        listaDeAlunos.setOnItemLongClickListener(configuraAdapterOnItemLongClick());
+
+        adapterLista.addAll(alunoDao.todos());
+
+        botaoAdicionar = findViewById(ACTIVITY_MAIN_FAB_NOVO_ALUNO);
         botaoAdicionar.setOnClickListener(configuraOnClickListener());
+
+
 
     }
 
@@ -53,27 +64,24 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        todos = alunoDao.todos();
+        adapterLista.clear();
+        adapterLista.addAll(alunoDao.todos());
 
-        listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
+    }
 
-        carregaListaAlunos();
-
-        listaDeAlunos.setOnItemClickListener(configuraOnItemClickListener());
-
-        listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    private AdapterView.OnItemLongClickListener configuraAdapterOnItemLongClick() {
+        return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Aluno alunoEscolhido = (Aluno) parent.getItemAtPosition(position);
-                alunoDao.remove(alunoEscolhido);
-                onResume();
+                adapterLista.remove(alunoEscolhido);
                 /**
                  * Em caso de return false, ele continua pro clique curto depois de soltar o botao
                  * Return true consome por inteiro o evento
                  */
                 return true;
             }
-        });
+        };
     }
 
 
@@ -103,12 +111,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
         };
     }
 
-    private void carregaListaAlunos() {
+    private void configuraListaAlunos() {
 
-        listaDeAlunos.setAdapter(new ArrayAdapter<>(
+        adapterLista = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_list_item_1,
-                todos));
+                android.R.layout.simple_list_item_1);
+        listaDeAlunos.setAdapter(adapterLista);
     }
 
     private void iniciaActivity() {

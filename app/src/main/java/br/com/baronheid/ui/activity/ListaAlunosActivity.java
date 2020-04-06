@@ -64,9 +64,13 @@ public class ListaAlunosActivity extends AppCompatActivity {
         listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno alunoRemovido = (Aluno) parent.getItemAtPosition(position);
-                alunoDao.remove(alunoRemovido);
+                Aluno alunoEscolhido = (Aluno) parent.getItemAtPosition(position);
+                alunoDao.remove(alunoEscolhido);
                 onResume();
+                /**
+                 * Em caso de return false, ele continua pro clique curto depois de soltar o botao
+                 * Return true consome por inteiro o evento
+                 */
                 return true;
             }
         });

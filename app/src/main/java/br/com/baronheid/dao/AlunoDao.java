@@ -36,11 +36,16 @@ public class AlunoDao {
     }
 
     public void remove(Aluno alunoRemovido) {
+        Aluno alunoPraRemover = null;
         for (Aluno aluno :
                 alunos) {
-            if (aluno.getId().equals(alunoRemovido.getId())){
-                alunos.remove(aluno);
+            if (aluno.getId().equals(alunoRemovido.getId())) {
+                alunoPraRemover = alunoRemovido;
+                break;
             }
+        }
+        if (alunoPraRemover != null) {
+            alunos.remove(alunoPraRemover);
         }
     }
 }

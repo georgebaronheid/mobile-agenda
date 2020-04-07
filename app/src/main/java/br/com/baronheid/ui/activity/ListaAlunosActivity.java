@@ -74,6 +74,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Aluno alunoEscolhido = (Aluno) parent.getItemAtPosition(position);
+                alunoDao.remove(alunoEscolhido);
                 adapterLista.remove(alunoEscolhido);
                 /**
                  * Em caso de return false, ele continua pro clique curto depois de soltar o botao

@@ -77,12 +77,16 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = 
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
-        Aluno alunoEscolhido = adapterLista.getItem(menuInfo.position);
-        alunoDao.remove(alunoEscolhido);
-        adapterLista.remove(alunoEscolhido);
+        if (item.getItemId() == R.id.activity_lista_alunos_menu_remover) {
+
+            AdapterView.AdapterContextMenuInfo menuInfo =
+                    (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+            Aluno alunoEscolhido = adapterLista.getItem(menuInfo.position);
+            alunoDao.remove(alunoEscolhido);
+            adapterLista.remove(alunoEscolhido);
+        }
         return super.onContextItemSelected(item);
     }
 

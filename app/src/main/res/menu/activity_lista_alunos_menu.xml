@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/activity_lista_alunos_menu"
+        android:id="@+id/activity_lista_alunos_menu_remover"
         android:title="Remover" />
+    <item
+        android:title="Cachaça"/>
 </menu>

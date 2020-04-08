@@ -29,6 +29,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
     public static final int ACTIVITY_LISTA_ALUNOS = R.layout.activity_lista_alunos;
     public static final int ACTIVITY_MAIN_LISTA_DE_ALUNOS = R.id.activity_main_lista_de_alunos;
     public static final int ACTIVITY_MAIN_FAB_NOVO_ALUNO = R.id.activity_main_fab_novo_aluno;
+    public static final int ACTIVITY_LISTA_ALUNOS_MENU = R.menu.activity_lista_alunos_menu;
 
     private FloatingActionButton botaoAdicionar;
 
@@ -71,7 +72,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add("Remover");
+        getMenuInflater().inflate(ACTIVITY_LISTA_ALUNOS_MENU, menu);
     }
 
     @Override
@@ -113,9 +114,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private void configuraListaAlunos() {
 
-        adapterLista = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1);
+        adapterLista = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         listaDeAlunos.setAdapter(adapterLista);
 
         registerForContextMenu(listaDeAlunos);

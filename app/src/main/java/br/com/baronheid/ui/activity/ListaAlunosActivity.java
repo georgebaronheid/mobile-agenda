@@ -2,17 +2,18 @@ package br.com.baronheid.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 import br.com.baronheid.R;
 import br.com.baronheid.dao.AlunoDao;
@@ -48,13 +49,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
         configuraListaAlunos();
 
         listaDeAlunos.setOnItemClickListener(configuraOnItemClickListener());
-        listaDeAlunos.setOnItemLongClickListener(configuraAdapterOnItemLongClick());
 
         adapterLista.addAll(alunoDao.todos());
 
         botaoAdicionar = findViewById(ACTIVITY_MAIN_FAB_NOVO_ALUNO);
-        botaoAdicionar.setOnClickListener(configuraOnClickListener());
-
+        botaoAdicionar.setOnClickListener(configuraOnClickListenerAdd());
 
 
     }
@@ -69,22 +68,22 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     }
 
-    private AdapterView.OnItemLongClickListener configuraAdapterOnItemLongClick() {
-        return new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno alunoEscolhido = (Aluno) parent.getItemAtPosition(position);
-                alunoDao.remove(alunoEscolhido);
-                adapterLista.remove(alunoEscolhido);
-                /**
-                 * Em caso de return false, ele continua pro clique curto depois de soltar o botao
-                 * Return true consome por inteiro o evento
-                 */
-                return true;
-            }
-        };
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remover");
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = 
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        Aluno alunoEscolhido = adapterLista.getItem(menuInfo.position);
+        alunoDao.remove(alunoEscolhido);
+        adapterLista.remove(alunoEscolhido);
+        return super.onContextItemSelected(item);
+    }
 
     private AdapterView.OnItemClickListener configuraOnItemClickListener() {
         return new AdapterView.OnItemClickListener() {
@@ -103,7 +102,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private View.OnClickListener configuraOnClickListener() {
+    private View.OnClickListener configuraOnClickListenerAdd() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +117,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 this,
                 android.R.layout.simple_list_item_1);
         listaDeAlunos.setAdapter(adapterLista);
+
+        registerForContextMenu(listaDeAlunos);
+
     }
 
     private void iniciaActivity() {
